@@ -1,0 +1,5 @@
+[
+  { "id": 1, "title": "Node.js Basics", "text": "Learn the basics of Node.js and JavaScript." },
+  { "id": 2, "title": "Advanced JS", "text": "JavaScript asynchronous logic is powerful." },
+  { "id": 3, "title": "Search Engines", "text": "Build a fast search engine using JavaScript Maps." }
+]
