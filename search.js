@@ -1,25 +1,42 @@
 const { processText } = require('./processor');
-const { invertedIndex, documentStore } = require('./engine');
+const { invertedIndex, documentStore, documentLengths } = require('./engine');
 
 function search(query) {
     const tokens = processText(query);
     if (tokens.length === 0) return [];
 
-    let resultIds = null;
+    const totalDocs = documentStore.size;
+    const documentScores = new Map(); // Tracks DocID -> Final Score
 
     for (const token of tokens) {
-        const docIds = invertedIndex.get(token) || new Set();
-        
-        if (resultIds === null) {
-            resultIds = new Set(docIds);
-        } else {
-            resultIds = new Set([...resultIds].filter(id => docIds.has(id)));
+        const docMap = invertedIndex.get(token);
+        if (!docMap) continue; // Term doesn't exist in the corpus
+
+        // IDF is consistent across all documents for this specific token
+        const docFrequency = docMap.size;
+        const idf = Math.log(totalDocs / docFrequency);
+
+        // Calculate TF and accumulate the final score for each document
+        for (const [docId, termCount] of docMap.entries()) {
+            const totalWordsInDoc = documentLengths.get(docId);
+            const tf = termCount / totalWordsInDoc;
+            const tfIdf = tf * idf;
+
+            const currentScore = documentScores.get(docId) || 0;
+            documentScores.set(docId, currentScore + tfIdf);
         }
     }
 
-    if (!resultIds || resultIds.size === 0) return [];
+    if (documentScores.size === 0) return [];
 
-    return Array.from(resultIds).map(id => documentStore.get(id));
+    // Sort documents by their accumulated score in descending order
+    return Array.from(documentScores.entries())
+        .sort((a, b) => b[1] - a[1]) 
+        .map(([docId, score]) => {
+            const doc = documentStore.get(docId);
+            // Returning the score alongside the document for debugging visibility
+            return { ...doc, score: score.toFixed(4) }; 
+        });
 }
 
 module.exports = { search };
