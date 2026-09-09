@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/aryanjangra-code/Distributed_Cache_System/issues"
   },
-  "homepage": "https://github.com/aryanjangra-code/Distributed_Cache_System#readme"
+  "homepage": "https://github.com/aryanjangra-code/Distributed_Cache_System#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0"
+  }
 }
