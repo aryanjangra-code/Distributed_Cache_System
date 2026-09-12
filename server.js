@@ -1,14 +1,13 @@
-// server.js
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const { search } = require('./search'); // Your TF-IDF search module
+const { search } = require('./search'); 
 
 const app = express();
 
-// Protects the backend from rapid-fire keystroke spam
+
 const searchLimiter = rateLimit({
-    windowMs: 60 * 1000, // 1 minute
-    max: 60, // Limit each IP to 60 requests per minute
+    windowMs: 60 * 1000,
+    max: 60, 
     message: { error: "Too many requests. Please try again later." }
 });
 
