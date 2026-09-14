@@ -1,4 +1,3 @@
-// SearchInterface.jsx
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function SearchInterface() {
@@ -6,7 +5,6 @@ export default function SearchInterface() {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     
-    // Use a ref to persist the timer ID across renders without triggering them
     const debounceTimer = useRef(null);
 
     useEffect(() => {
@@ -15,17 +13,15 @@ export default function SearchInterface() {
             return;
         }
 
-        // Clear the previous timer if the user keeps typing
         if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
-        // Set a new timer to wait 300ms before fetching
         debounceTimer.current = setTimeout(async () => {
             setLoading(true);
             try {
-                // Fetching page 1 with a limit of 10 items
                 const response = await fetch(`/api/search?q=${encodeURIComponent(query)}&page=1&limit=10`);
                 const data = await response.json();
                 setResults(data.results || []);
+                console.log("Search results:", data);
             } catch (error) {
                 console.error("Search request failed:", error);
             } finally {
@@ -33,7 +29,6 @@ export default function SearchInterface() {
             }
         }, 300);
 
-        // Cleanup function for when the component unmounts
         return () => clearTimeout(debounceTimer.current);
     }, [query]);
 

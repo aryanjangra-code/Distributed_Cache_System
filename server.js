@@ -1,8 +1,23 @@
 const express = require('express');
+const cors = require('cors');
 const rateLimit = require('express-rate-limit');
-const { search } = require('./search'); 
+const fs = require('fs');
+const { search } = require('./search');
+const { indexDocument } = require('./engine');
 
 const app = express();
+app.use(cors());
+
+
+try {
+    const rawData = fs.readFileSync('./corpus.json', 'utf8');
+    const corpus = JSON.parse(rawData);
+    
+    corpus.forEach(doc => indexDocument(doc));
+    console.log(`Successfully indexed ${corpus.length} documents.`);
+} catch (error) {
+    console.error("Failed to load corpus.json. Make sure the file exists.", error);
+}
 
 
 const searchLimiter = rateLimit({
@@ -20,14 +35,11 @@ app.get('/api/search', searchLimiter, (req, res) => {
         return res.json({ totalResults: 0, page, totalPages: 0, results: [] });
     }
 
-    // 1. Fetch all scored and sorted results
     const allResults = search(query);
     
-    // 2. Calculate array bounds for the requested chunk
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     
-    // 3. Slice the array to return only the current page
     const paginatedResults = allResults.slice(startIndex, endIndex);
 
     res.json({
