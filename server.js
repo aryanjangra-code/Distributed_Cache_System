@@ -3,7 +3,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const { search } = require('./search');
-const { indexDocument } = require('./engine');
+const { indexDocument, documentStore } = require('./engine');
 
 const app = express();
 app.use(cors());
@@ -14,6 +14,7 @@ try {
     const corpus = JSON.parse(rawData);
     
     corpus.forEach(doc => indexDocument(doc));
+    console.log("Database size:", documentStore.size);
     console.log(`Successfully indexed ${corpus.length} documents.`);
 } catch (error) {
     console.error("Failed to load corpus.json. Make sure the file exists.", error);

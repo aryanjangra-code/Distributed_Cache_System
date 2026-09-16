@@ -18,10 +18,9 @@ export default function SearchInterface() {
         debounceTimer.current = setTimeout(async () => {
             setLoading(true);
             try {
-                const response = await fetch(`/api/search?q=${encodeURIComponent(query)}&page=1&limit=10`);
+                const response = await fetch(`http://localhost:3000/api/search?q=${encodeURIComponent(query)}&page=1&limit=10`);
                 const data = await response.json();
                 setResults(data.results || []);
-                console.log("Search results:", data);
             } catch (error) {
                 console.error("Search request failed:", error);
             } finally {
