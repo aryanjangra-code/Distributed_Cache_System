@@ -8,6 +8,9 @@ const { indexDocument, documentStore } = require('./engine');
 const app = express();
 app.use(cors());
 
+const searchCache = new Map();
+
+setInterval(() => searchCache.clear(), 1000 * 60 * 15);
 
 try {
     const rawData = fs.readFileSync('./corpus.json', 'utf8');
@@ -36,6 +39,14 @@ app.get('/api/search', searchLimiter, (req, res) => {
         return res.json({ totalResults: 0, page, totalPages: 0, results: [] });
     }
 
+    const cacheKey = `${query.toLowerCase()}-page:${page}-limit:${limit}`;
+    if (searchCache.has(cacheKey)) {
+        console.log(`Cache HIT: Serving instant results for "${query}"`);
+        return res.json(searchCache.get(cacheKey));
+    }
+    console.log(`Cache MISS: Calculating results for "${query}"`);
+
+    // Perform the search
     const allResults = search(query);
     
     const startIndex = (page - 1) * limit;
