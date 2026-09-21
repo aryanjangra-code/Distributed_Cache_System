@@ -46,7 +46,6 @@ app.get('/api/search', searchLimiter, (req, res) => {
     }
     console.log(`Cache MISS: Calculating results for "${query}"`);
 
-    // Perform the search
     const allResults = search(query);
     
     const startIndex = (page - 1) * limit;
