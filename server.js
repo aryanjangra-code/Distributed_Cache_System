@@ -4,11 +4,13 @@ const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const { search } = require('./search');
 const { indexDocument, documentStore } = require('./engine');
+const LRUCache = require('./lru');
 
 const app = express();
 app.use(cors());
 
-const searchCache = new Map();
+const searchCache = new LRUCache(50);
+
 
 setInterval(() => searchCache.clear(), 1000 * 60 * 15);
 
@@ -40,9 +42,10 @@ app.get('/api/search', searchLimiter, (req, res) => {
     }
 
     const cacheKey = `${query.toLowerCase()}-page:${page}-limit:${limit}`;
-    if (searchCache.has(cacheKey)) {
+    const cachedData = searchCache.get(cacheKey);
+    if (cachedData) {
         console.log(`Cache HIT: Serving instant results for "${query}"`);
-        return res.json(searchCache.get(cacheKey));
+        return res.json(cachedData);
     }
     console.log(`Cache MISS: Calculating results for "${query}"`);
 
@@ -53,12 +56,17 @@ app.get('/api/search', searchLimiter, (req, res) => {
     
     const paginatedResults = allResults.slice(startIndex, endIndex);
 
-    res.json({
+    const finalResponse = {
         totalResults: allResults.length,
         page,
         totalPages: Math.ceil(allResults.length / limit),
         results: paginatedResults
-    });
+    };
+
+    // Use the .set() method to enforce capacity limits
+    searchCache.set(cacheKey, finalResponse);
+
+    res.json(finalResponse);
 });
 
 app.listen(3000, () => console.log('Search API Gateway running on port 3000'));
