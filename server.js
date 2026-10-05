@@ -63,7 +63,6 @@ app.get('/api/search', searchLimiter, (req, res) => {
         results: paginatedResults
     };
 
-    // Use the .set() method to enforce capacity limits
     searchCache.set(cacheKey, finalResponse);
 
     res.json(finalResponse);
