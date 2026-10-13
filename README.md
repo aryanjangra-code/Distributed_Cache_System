@@ -29,12 +29,3 @@ This system acts as a high-performance middleware layer. It intercepts incoming 
     * **Cache Miss:** Gateway forwards the query to the Core Search Engine.
 3. **Search Execution:** The engine tokenizes the query, queries the pre-built Inverted Index, and scores the relevant documents.
 4. **Cache Write & Return:** The gateway writes the new result into the cache node (triggering LRU eviction if memory is full) and returns the data to the client.
-
-Roadmap & Current Progress[x] 
-* Phase 1: Core Search Pipeline (Tokenization & Scoring)[x] 
-* Phase 2: In-Memory LRU Eviction Policy[x] 
-* Phase 3: Inverted Index Refactoring ($O(1)$ lookups)[ ] 
-* Phase 4: Consistent Hash Ring Implementation[ ] 
-* Phase 5: Multi-Node TCP Cluster Setup[ ] 
-* Phase 6: Cloud Deployment (Docker & Remote Servers)[ ] 
-* Phase 7: AI Semantic Cache Upgrade (Vector Embeddings)
