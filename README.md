@@ -1,11 +1,10 @@
 # Distributed_Cache_System
 starting date 25-08-2026
 
-# Universal Distributed Cache & Search Engine
 
-A highly scalable, in-memory distributed cache system integrated with a full-text search engine. Built from scratch using Node.js and React, this project demonstrates core cloud computing architecture, advanced memory management, and distributed routing logic.
+A highly scalable, in-memory distributed cache system. Built from scratch using Node.js and React, this project demonstrates core cloud computing architecture, advanced memory management, and distributed routing logic.
 
-## 🚀 Overview
+## Overview
 
 This system acts as a high-performance middleware layer. It intercepts incoming search queries, checks a distributed in-memory cache for previous results to guarantee sub-millisecond response times, and falls back to a custom full-text search algorithm utilizing an inverted index when cache misses occur.
 
