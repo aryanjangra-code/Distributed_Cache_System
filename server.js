@@ -11,9 +11,6 @@ app.use(cors());
 
 const searchCache = new LRUCache(50);
 
-
-setInterval(() => searchCache.clear(), 1000 * 60 * 15);
-
 try {
     const rawData = fs.readFileSync('./corpus.json', 'utf8');
     const corpus = JSON.parse(rawData);
