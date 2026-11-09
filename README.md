@@ -14,13 +14,13 @@ This system acts as a high-performance middleware layer. It intercepts incoming 
 * **Consistent Hashing Router:** (In Progress) Uses SHA-256 algorithms to distribute cache data evenly across multiple server nodes without data loss during server failures.
 * **React Control Plane:** A live UI dashboard to visualize cache hits, misses, and cluster node health.
 
-## 🛠️ Tech Stack
+## Tech Stack
 * **Backend:** Node.js, Express.js
 * **Networking:** Raw TCP/IP Sockets, HTTP/REST API
 * **Frontend:** React, Tailwind CSS
 * **Core Data Structures:** Hash Maps, Sets, Doubly Linked Lists, Binary Search Trees
 
-## 🧠 System Data Flow
+## System Data Flow
 
 1. **Client Request:** React frontend sends a search query to the API Gateway.
 2. **Cache Check:** Gateway hashes the query and routes it to the correct cache node.
