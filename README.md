@@ -18,7 +18,7 @@ This system acts as a high-performance middleware layer. It intercepts incoming 
 * **Backend:** Node.js, Express.js
 * **Networking:** Raw TCP/IP Sockets, HTTP/REST API
 * **Frontend:** React, Tailwind CSS
-* **Core Data Structures:** Hash Maps, Sets, Doubly Linked Lists, Binary Search Trees
+* **Core Data Structures:** Hash Maps, Sets, Doubly Linked Lists
 
 ## System Data Flow
 
