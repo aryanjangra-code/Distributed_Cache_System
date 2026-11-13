@@ -1,6 +1,7 @@
 # Distributed_Cache_System
 starting date 25-08-2026
 
+A highly scalable, in-memory distributed cache system. Built from scratch using Node.js and React, this project demonstrates core cloud computing architecture, advanced memory management, and distributed routing logic.
 
 ## Overview
 
