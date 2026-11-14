@@ -1,7 +1,6 @@
 const { processText } = require('./processor');
 const { invertedIndex, documentStore, documentLengths } = require('./engine');
 
-//this is a search function that finds top result by using tf-idf 
 function search(query) {
     const tokens = processText(query);
     if (tokens.length === 0) return [];
@@ -30,10 +29,10 @@ function search(query) {
 
     return Array.from(documentScores.entries())
         .sort((a, b) => b[1] - a[1]) 
-        .map(([docId, score]) => {
-            const doc = documentStore.get(docId);
-            return { ...doc, score: score.toFixed(4) }; 
-        });
+        .map(([docId, score]) => ({
+            id: docId, 
+            score: score.toFixed(4)
+        }));
 }
 
 module.exports = { search };
